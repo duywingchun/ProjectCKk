@@ -1,4 +1,4 @@
-package com.example.projectck; // Đổi lại đúng package của bạn
+package com.example.projectck;
 
 import android.os.Bundle;
 import android.view.View;

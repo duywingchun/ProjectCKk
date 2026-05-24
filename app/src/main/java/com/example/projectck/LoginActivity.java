@@ -172,13 +172,11 @@ public class LoginActivity extends AppCompatActivity {
                     if (documentSnapshot.exists()) {
                         String role = documentSnapshot.getString("role");
                         if ("admin".equals(role)) {
-                            Toast.makeText(this, "Chào mừng Admin!", Toast.LENGTH_SHORT).show();
-                            // startActivity(new Intent(LoginActivity.this, AdminActivity.class));
-                            // finish();
+                            startActivity(new Intent(LoginActivity.this, AdminHomeActivity.class));
+                            finish();
                         } else {
-                            Toast.makeText(this, "Chào mừng Nhân viên!", Toast.LENGTH_SHORT).show();
-                            // startActivity(new Intent(LoginActivity.this, StaffActivity.class));
-                            // finish();
+                            startActivity(new Intent(LoginActivity.this, StaffHomeActivity.class));
+                            finish();
                         }
                     } else {
                         Toast.makeText(LoginActivity.this, "Không tìm thấy thông tin phân quyền!", Toast.LENGTH_SHORT).show();
