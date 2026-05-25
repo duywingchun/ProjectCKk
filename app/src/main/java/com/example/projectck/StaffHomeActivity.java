@@ -26,7 +26,7 @@ public class StaffHomeActivity extends AppCompatActivity {
         auth = FirebaseAuth.getInstance();
 
         // Ánh xạ view
-        tvWelcomeAdmin = findViewById(R.id.tvWelcomeAdmin);
+
         btnLogout = findViewById(R.id.btnLogout);
 
         // User hiện tại

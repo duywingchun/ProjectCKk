@@ -34,7 +34,8 @@
         android:id="@+id/btnLogin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Đăng Nhập"/>
+        android:text="Đăng Nhập"
+        android:backgroundTint="@color/button_color"/>
 
     <Button
         android:id="@+id/btnLoginGoogle"
