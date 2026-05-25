@@ -1,0 +1,15 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/nav_food"
+        android:title="Quản lý món ăn"/>
+
+    <item
+        android:id="@+id/nav_orders"
+        android:title="Xem danh sách đơn hàng"/>
+
+    <item
+        android:id="@+id/nav_revenue"
+        android:title="Xem doanh thu"/>
+
+</menu>

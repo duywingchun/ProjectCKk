@@ -29,6 +29,9 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import androidx.drawerlayout.widget.DrawerLayout;
+import com.google.android.material.navigation.NavigationView;
+
 public class AdminHomeActivity extends AppCompatActivity {
 
     RecyclerView recyclerFoods;
@@ -39,6 +42,10 @@ public class AdminHomeActivity extends AppCompatActivity {
     FirebaseFirestore db;
     FloatingActionButton fabAddFood;
     ImageView imgProfile;
+
+    DrawerLayout drawerLayout;
+    NavigationView navView;
+    ImageView imgMenu;
 
 
     @Override
@@ -139,7 +146,6 @@ public class AdminHomeActivity extends AppCompatActivity {
 
             popupWindow.setElevation(10);
 
-            // Show ngay dưới icon
             popupWindow.showAsDropDown(imgProfile);
 
             // Init views trong popup
@@ -175,7 +181,31 @@ public class AdminHomeActivity extends AppCompatActivity {
                 popupWindow.dismiss();
             });
         });
+        drawerLayout = findViewById(R.id.drawerLayout);
+        navView = findViewById(R.id.navView);
+        imgMenu = findViewById(R.id.imgMenu);
+        imgMenu.setOnClickListener(v -> {
+            drawerLayout.openDrawer(androidx.core.view.GravityCompat.START);
 
+            navView.setNavigationItemSelectedListener(item -> {
+
+                int id = item.getItemId();
+
+                if (id == R.id.nav_food) {
+                }
+
+                else if (id == R.id.nav_orders) {
+                    startActivity(new Intent(this, AdminOrdersActivity.class));
+                }
+
+                else if (id == R.id.nav_revenue) {
+                    startActivity(new Intent(this, RevenueActivity.class));
+                }
+
+                drawerLayout.closeDrawers();
+                return true;
+            });
+        });
     }
 
     private void loadFoods() {

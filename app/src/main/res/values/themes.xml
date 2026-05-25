@@ -8,4 +8,13 @@
     <style name="Theme.ProjectCK" parent="Base.Theme.ProjectCK" />
     <style name="CircleImage"><item name="cornerSize">50%</item>
     </style>
+    <style name="NavTextStyle">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+    </style>
+
+    <style name="ShapeAppearanceOverlay.App.CornerSize10" parent="">
+        <item name="cornerSize">12dp</item>
+    </style>
 </resources>
