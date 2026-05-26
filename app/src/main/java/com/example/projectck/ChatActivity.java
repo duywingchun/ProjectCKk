@@ -33,7 +33,7 @@ public class ChatActivity extends AppCompatActivity {
     private List<ChatMessage> messageList;
     private List<Food> foodList = new ArrayList<>();
     private OkHttpClient client;
-    
+
     private final String API_KEY = "AIzaSyCZUNbc5cvNwHerxeJjDZvKyNERiP6L73k";
 
     @Override

@@ -26,10 +26,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class LoginActivity extends AppCompatActivity {
-    private static final int RC_SIGN_IN = 9001; // Mã định danh luồng đăng nhập Google
+    private static final int RC_SIGN_IN = 9001;
 
     private EditText edtEmail, edtPassword;
-    private Button btnLogin, btnGoogleSign; // Thêm nút Google
+    private Button btnLogin, btnGoogleSign;
     private TextView tvRegister;
     private ProgressBar progressBar;
 
