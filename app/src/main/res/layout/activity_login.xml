@@ -4,15 +4,17 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="24dp"
-    android:gravity="center">
+    android:gravity="center"
+    android:background="@drawable/bg_gradient">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="RESTAURANT APP"
-        android:textSize="28sp"
+        android:text="ResManager"
+        android:textSize="35sp"
         android:textStyle="bold"
-        android:layout_marginBottom="32dp"/>
+        android:layout_marginBottom="32dp"
+        android:textColor="@color/appname_color"/>
 
     <EditText
         android:id="@+id/edtEmail"
@@ -42,18 +44,19 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Đăng nhập bằng Google"
-        android:backgroundTint="#DB4437"
+        android:backgroundTint="#673AB7"
         android:textColor="@android:color/white"
-        android:layout_marginTop="8dp"/>
+        android:layout_marginTop="8dp" />
 
     <TextView
         android:id="@+id/tvRegister"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Chưa có tài khoản? Đăng ký ngay"
-        android:textColor="@android:color/holo_blue_dark"
+        android:textColor="#673AB7"
         android:layout_marginTop="24dp"
-        android:padding="8dp"/>
+        android:padding="8dp"
+        android:textStyle="bold"/>
 
     <ProgressBar
         android:id="@+id/progressBar"

@@ -122,7 +122,7 @@ public class CartActivity extends AppCompatActivity {
             }
 
             else if (id == R.id.nav_cart) {
-                startActivity(new Intent(this, CartActivity.class));
+                // Already here
             }
             else if (id == R.id.nav_orders) {
                 startActivity(new Intent(this, StaffOrdersActivity.class));
@@ -151,6 +151,7 @@ public class CartActivity extends AppCompatActivity {
             popupWindow.showAsDropDown(imgProfile);
 
             // Init views trong popup
+            TextView txtName = view.findViewById(R.id.txtName);
             TextView txtEmail = view.findViewById(R.id.txtEmail);
             TextView txtRole = view.findViewById(R.id.txtRole);
             Button btnLogout = view.findViewById(R.id.btnLogout);
@@ -166,7 +167,11 @@ public class CartActivity extends AppCompatActivity {
                         .document(user.getUid())
                         .get()
                         .addOnSuccessListener(documentSnapshot -> {
+                            String name = documentSnapshot.getString("name");
                             String role = documentSnapshot.getString("role");
+                            if (name != null) {
+                                txtName.setText("Name: " + name);
+                            }
                             txtRole.setText("Role: " + role);
                         });
             }

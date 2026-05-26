@@ -20,12 +20,20 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> 
 
     Context context;
     List<DocumentSnapshot> list;
+    boolean isAdmin;
 
     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     public OrderAdapter(Context context, List<DocumentSnapshot> list) {
         this.context = context;
         this.list = list;
+        this.isAdmin = false;
+    }
+
+    public OrderAdapter(Context context, List<DocumentSnapshot> list, boolean isAdmin) {
+        this.context = context;
+        this.list = list;
+        this.isAdmin = isAdmin;
     }
 
     @NonNull
@@ -52,10 +60,10 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> 
         h.txtTotal.setText("Total: " + total + " đ");
         h.txtStatus.setText("Status: " + status);
 
-        if ("done".equals(status)) {
-            h.btnDone.setVisibility(View.GONE);
-        } else {
+        if (isAdmin && !"done".equals(status)) {
             h.btnDone.setVisibility(View.VISIBLE);
+        } else {
+            h.btnDone.setVisibility(View.GONE);
         }
 
         h.btnDone.setOnClickListener(v -> {

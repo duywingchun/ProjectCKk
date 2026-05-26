@@ -2,9 +2,12 @@ package com.example.projectck;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
@@ -32,12 +35,13 @@ public class StaffHomeActivity extends AppCompatActivity {
     DrawerLayout drawerLayout;
     NavigationView navView;
     ImageView imgMenu, imgProfile;
+    EditText edtSearch;
 
     RecyclerView recyclerFoods;
 
     FirebaseFirestore db;
 
-    ArrayList<Food> foodList;
+    ArrayList<Food> foodList, allFoodList;
     StaffFoodAdapter adapter;
 
     @Override
@@ -52,12 +56,15 @@ public class StaffHomeActivity extends AppCompatActivity {
         imgMenu = findViewById(R.id.imgMenu);
         imgProfile = findViewById(R.id.imgProfile);
         recyclerFoods = findViewById(R.id.recyclerFoods);
+        edtSearch = findViewById(R.id.edtSearch);
 
         db = FirebaseFirestore.getInstance();
 
         // setup recycler
         recyclerFoods.setLayoutManager(new LinearLayoutManager(this));
         foodList = new ArrayList<>();
+        allFoodList = new ArrayList<>();
+        
         //thêm món vào giỏ hàng
         adapter = new StaffFoodAdapter(foodList, food -> {
 
@@ -69,6 +76,22 @@ public class StaffHomeActivity extends AppCompatActivity {
         });
 
         recyclerFoods.setAdapter(adapter);
+
+        // search functionality
+        if (edtSearch != null) {
+            edtSearch.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    filterFood(s.toString());
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {}
+            });
+        }
 
         // open drawer
         imgMenu.setOnClickListener(v ->
@@ -111,6 +134,7 @@ public class StaffHomeActivity extends AppCompatActivity {
             popupWindow.setElevation(10);
             popupWindow.showAsDropDown(imgProfile);
 
+            TextView txtName = view.findViewById(R.id.txtName);
             TextView txtEmail = view.findViewById(R.id.txtEmail);
             TextView txtRole = view.findViewById(R.id.txtRole);
             Button btnLogout = view.findViewById(R.id.btnLogout);
@@ -125,7 +149,11 @@ public class StaffHomeActivity extends AppCompatActivity {
                         .document(user.getUid())
                         .get()
                         .addOnSuccessListener(documentSnapshot -> {
+                            String name = documentSnapshot.getString("name");
                             String role = documentSnapshot.getString("role");
+                            if (name != null) {
+                                txtName.setText("Name: " + name);
+                            }
                             txtRole.setText("Role: " + role);
                         });
             }
@@ -157,12 +185,14 @@ public class StaffHomeActivity extends AppCompatActivity {
                 .addOnSuccessListener(queryDocumentSnapshots -> {
 
                     foodList.clear();
+                    allFoodList.clear();
 
                     for (DocumentSnapshot doc : queryDocumentSnapshots) {
                         Food food = doc.toObject(Food.class);
                         if (food != null) {
                             food.setId(doc.getId());
                             foodList.add(food);
+                            allFoodList.add(food);
                         }
                     }
 
@@ -172,5 +202,22 @@ public class StaffHomeActivity extends AppCompatActivity {
                 .addOnFailureListener(e ->
                         Toast.makeText(this, "Load fail", Toast.LENGTH_SHORT).show()
                 );
+    }
+    private void filterFood(String text){
+
+        foodList.clear();
+
+        for(Food food : allFoodList){
+
+            if(food.getName()
+                    .toLowerCase()
+                    .contains(text.toLowerCase())){
+
+                foodList.add(food);
+
+            }
+        }
+
+        adapter.notifyDataSetChanged();
     }
 }

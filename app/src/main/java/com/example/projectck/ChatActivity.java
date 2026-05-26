@@ -33,7 +33,7 @@ public class ChatActivity extends AppCompatActivity {
     private List<ChatMessage> messageList;
     private List<Food> foodList = new ArrayList<>();
     private OkHttpClient client;
-    // DÁN KEY MỚI TỪ AI STUDIO (CÁI CÓ ĐUÔI 8I0D) VÀO ĐÂY
+    // DÁN KEY MỚI
     private final String API_KEY = "AIzaSyCZUNbc5cvNwHerxeJjDZvKyNERiP6L73k";
 
     @Override

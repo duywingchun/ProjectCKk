@@ -6,13 +6,23 @@
     android:padding="20dp"
     android:background="@android:color/white">
 
+
+    <TextView
+        android:id="@+id/txtName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Name:"
+        android:textSize="15sp"
+        android:textStyle="bold"/>
+
     <TextView
         android:id="@+id/txtEmail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Email:"
         android:textSize="15sp"
-        android:textStyle="bold"/>
+        android:textStyle="bold"
+        android:layout_marginTop="10dp" />
 
     <TextView
         android:id="@+id/txtRole"

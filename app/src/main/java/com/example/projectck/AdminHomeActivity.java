@@ -149,6 +149,7 @@ public class AdminHomeActivity extends AppCompatActivity {
             popupWindow.showAsDropDown(imgProfile);
 
             // Init views trong popup
+            TextView txtName = view.findViewById(R.id.txtName);
             TextView txtEmail = view.findViewById(R.id.txtEmail);
             TextView txtRole = view.findViewById(R.id.txtRole);
             Button btnLogout = view.findViewById(R.id.btnLogout);
@@ -164,7 +165,11 @@ public class AdminHomeActivity extends AppCompatActivity {
                         .document(user.getUid())
                         .get()
                         .addOnSuccessListener(documentSnapshot -> {
+                            String name = documentSnapshot.getString("name");
                             String role = documentSnapshot.getString("role");
+                            if (name != null) {
+                                txtName.setText("Name: " + name);
+                            }
                             txtRole.setText("Role: " + role);
                         });
             }
@@ -436,11 +441,8 @@ public class AdminHomeActivity extends AppCompatActivity {
                     .contains(text.toLowerCase())){
 
                 foodList.add(food);
-
             }
         }
-
         adapter.notifyDataSetChanged();
     }
-
 }
