@@ -87,6 +87,9 @@ public class StaffHomeActivity extends AppCompatActivity {
             else if (id == R.id.nav_cart) {
                 startActivity(new Intent(this, CartActivity.class));
             }
+            else if (id == R.id.nav_orders) {
+                startActivity(new Intent(this, StaffOrdersActivity.class));
+            }
 
 
             drawerLayout.closeDrawer(GravityCompat.START);
