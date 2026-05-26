@@ -12,7 +12,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class RegisterActivity extends AppCompatActivity {
-    private EditText edtEmail, edtPassword;
+    private EditText edtEmail, edtPassword, edtName, edtConfirmPassword;
     private Button btnRegister;
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
@@ -25,16 +25,25 @@ public class RegisterActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
 
+        edtName = findViewById(R.id.edtRegName);
         edtEmail = findViewById(R.id.edtRegEmail);
         edtPassword = findViewById(R.id.edtRegPassword);
+        edtConfirmPassword = findViewById(R.id.edtRegConfirmPassword);
         btnRegister = findViewById(R.id.btnRegister);
 
         btnRegister.setOnClickListener(v -> {
+            String name = edtName.getText().toString().trim();
             String email = edtEmail.getText().toString().trim();
             String password = edtPassword.getText().toString().trim();
+            String confirmPassword = edtConfirmPassword.getText().toString().trim();
 
-            if (email.isEmpty() || password.isEmpty()) {
+            if (name.isEmpty() || email.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
                 Toast.makeText(RegisterActivity.this, "Vui lòng nhập đầy đủ thông tin", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            if (!password.equals(confirmPassword)) {
+                Toast.makeText(RegisterActivity.this, "Mật khẩu xác nhận không khớp", Toast.LENGTH_SHORT).show();
                 return;
             }
 
@@ -44,8 +53,9 @@ public class RegisterActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             String uid = mAuth.getCurrentUser().getUid();
 
-                            // Lưu quyền mặc định là "staff" lên Firestore
+                            // Lưu thông tin người dùng lên Firestore
                             Map<String, Object> userMap = new HashMap<>();
+                            userMap.put("name", name);
                             userMap.put("email", email);
                             userMap.put("role", "staff");
 

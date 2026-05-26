@@ -15,6 +15,14 @@
         android:layout_marginBottom="32dp"/>
 
     <EditText
+        android:id="@+id/edtRegName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Họ tên"
+        android:inputType="textPersonName"
+        android:layout_marginBottom="12dp"/>
+
+    <EditText
         android:id="@+id/edtRegEmail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -27,6 +35,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Mật khẩu"
+        android:inputType="textPassword"
+        android:layout_marginBottom="12dp"/>
+
+    <EditText
+        android:id="@+id/edtRegConfirmPassword"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Xác nhận mật khẩu"
         android:inputType="textPassword"
         android:layout_marginBottom="24dp"/>
 
