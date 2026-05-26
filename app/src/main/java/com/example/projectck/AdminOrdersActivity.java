@@ -123,6 +123,8 @@ public class AdminOrdersActivity extends AppCompatActivity {
             });
         });
 
-        // THÊM LOADORDER!!!!
+        // thêm loadorder hiển thị ds đơn hàng
+        //
+         //
     }
 }

@@ -16,60 +16,97 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.projectck.adapters.StaffFoodAdapter;
-import com.example.projectck.models.Food;
+import com.example.projectck.adapters.CartAdapter;
+import com.example.projectck.data.CartManager;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import com.example.projectck.models.CartItem;
+
 import java.util.ArrayList;
-import com.example.projectck.data.CartManager;
+import java.util.HashMap;
 
-public class StaffHomeActivity extends AppCompatActivity {
+public class CartActivity extends AppCompatActivity {
 
+    RecyclerView recyclerCart;
+    TextView txtTotal;
+    Button btnCheckout;
+    ImageView imgMenu,imgProfile;
+    CartAdapter adapter;
     DrawerLayout drawerLayout;
     NavigationView navView;
-    ImageView imgMenu, imgProfile;
-
-    RecyclerView recyclerFoods;
-
-    FirebaseFirestore db;
-
-    ArrayList<Food> foodList;
-    StaffFoodAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_cart);
 
-        setContentView(R.layout.activity_staff_home);
+        recyclerCart = findViewById(R.id.recyclerCart);
+        txtTotal = findViewById(R.id.txtTotal);
+        btnCheckout = findViewById(R.id.btnCheckout);
+        imgProfile = findViewById(R.id.imgProfile);
 
-        // init views
         drawerLayout = findViewById(R.id.drawerLayout);
         navView = findViewById(R.id.navView);
         imgMenu = findViewById(R.id.imgMenu);
-        imgProfile = findViewById(R.id.imgProfile);
-        recyclerFoods = findViewById(R.id.recyclerFoods);
 
-        db = FirebaseFirestore.getInstance();
+        recyclerCart.setLayoutManager(new LinearLayoutManager(this));
 
-        // setup recycler
-        recyclerFoods.setLayoutManager(new LinearLayoutManager(this));
-        foodList = new ArrayList<>();
-        //thêm món vào giỏ hàng
-        adapter = new StaffFoodAdapter(foodList, food -> {
+        adapter = new CartAdapter(CartManager.cartList, this::updateTotal);
 
-            CartManager.addToCart(food);
+        recyclerCart.setAdapter(adapter);
 
-            Toast.makeText(this,
-                    "Đã thêm: " + food.getName(),
-                    Toast.LENGTH_SHORT).show();
+        updateTotal();
+
+        btnCheckout.setOnClickListener(v -> {
+
+            if (CartManager.cartList.isEmpty()) {
+                Toast.makeText(this, "Giỏ hàng trống", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+            ArrayList<Object> items = new ArrayList<>();
+
+            for (CartItem item : CartManager.cartList) {
+
+                HashMap<String, Object> foodMap = new HashMap<>();
+                foodMap.put("name", item.getFood().getName());
+                foodMap.put("price", item.getFood().getPrice());
+                foodMap.put("quantity", item.getQuantity());
+
+                items.add(foodMap);
+            }
+
+            // taọ hóa đơn
+            HashMap<String, Object> order = new HashMap<>();
+            order.put("items", items);
+            order.put("total", CartManager.getTotalPrice());
+            order.put("status", "pending");
+            order.put("staffId", FirebaseAuth.getInstance().getUid());
+            order.put("time", FieldValue.serverTimestamp());
+
+            // push lên firebase
+            db.collection("orders")
+                    .add(order)
+                    .addOnSuccessListener(doc -> {
+
+                        Toast.makeText(this, "Tạo hóa đơn thành công", Toast.LENGTH_SHORT).show();
+
+                        // clear cart
+                        CartManager.clearCart();
+
+                        finish();
+                    })
+                    .addOnFailureListener(e -> {
+                        Toast.makeText(this, "Lỗi tạo hóa đơn", Toast.LENGTH_SHORT).show();
+                    });
+
         });
-
-        recyclerFoods.setAdapter(adapter);
-
         // open drawer
         imgMenu.setOnClickListener(v ->
                 drawerLayout.openDrawer(GravityCompat.START)
@@ -81,7 +118,7 @@ public class StaffHomeActivity extends AppCompatActivity {
             int id = item.getItemId();
 
             if (id == R.id.nav_staff_home) {
-                loadFoods();
+                startActivity(new Intent(this, StaffHomeActivity.class));
             }
 
             else if (id == R.id.nav_cart) {
@@ -96,11 +133,12 @@ public class StaffHomeActivity extends AppCompatActivity {
             return true;
         });
 
-        // profile popup
         imgProfile.setOnClickListener(v -> {
 
+            // Inflate layout profile
             View view = getLayoutInflater().inflate(R.layout.dialog_profile, null);
 
+            // Create PopupWindow
             PopupWindow popupWindow = new PopupWindow(
                     view,
                     ViewGroup.LayoutParams.WRAP_CONTENT,
@@ -109,12 +147,15 @@ public class StaffHomeActivity extends AppCompatActivity {
             );
 
             popupWindow.setElevation(10);
+
             popupWindow.showAsDropDown(imgProfile);
 
+            // Init views trong popup
             TextView txtEmail = view.findViewById(R.id.txtEmail);
             TextView txtRole = view.findViewById(R.id.txtRole);
             Button btnLogout = view.findViewById(R.id.btnLogout);
 
+            // Get current user
             FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
             if (user != null) {
@@ -130,42 +171,21 @@ public class StaffHomeActivity extends AppCompatActivity {
                         });
             }
 
+            // Logout action
             btnLogout.setOnClickListener(v1 -> {
+
                 FirebaseAuth.getInstance().signOut();
 
-                Intent intent = new Intent(this, LoginActivity.class);
+                Intent intent = new Intent(CartActivity.this, LoginActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
 
                 popupWindow.dismiss();
             });
         });
-
-        // load data
-        loadFoods();
     }
 
-    private void loadFoods() {
-
-        db.collection("foods")
-                .get()
-                .addOnSuccessListener(queryDocumentSnapshots -> {
-
-                    foodList.clear();
-
-                    for (DocumentSnapshot doc : queryDocumentSnapshots) {
-                        Food food = doc.toObject(Food.class);
-                        if (food != null) {
-                            food.setId(doc.getId());
-                            foodList.add(food);
-                        }
-                    }
-
-                    adapter.notifyDataSetChanged();
-
-                })
-                .addOnFailureListener(e ->
-                        Toast.makeText(this, "Load fail", Toast.LENGTH_SHORT).show()
-                );
+    private void updateTotal() {
+        txtTotal.setText("Total: " + CartManager.getTotalPrice() + " đ");
     }
 }
