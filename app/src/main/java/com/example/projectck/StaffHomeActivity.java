@@ -88,11 +88,6 @@ public class StaffHomeActivity extends AppCompatActivity {
                 startActivity(new Intent(this, CartActivity.class));
             }
 
-            else if (id == R.id.nav_table) {
-                Toast.makeText(this, "Quản lý bàn", Toast.LENGTH_SHORT).show();
-                // TODO Table
-            }
-
 
             drawerLayout.closeDrawer(GravityCompat.START);
             return true;

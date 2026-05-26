@@ -11,13 +11,17 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.projectck.adapters.CartAdapter;
 import com.example.projectck.data.CartManager;
+import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import com.example.projectck.models.CartItem;
@@ -30,8 +34,10 @@ public class CartActivity extends AppCompatActivity {
     RecyclerView recyclerCart;
     TextView txtTotal;
     Button btnCheckout;
-    ImageView imgProfile;
+    ImageView imgMenu,imgProfile;
     CartAdapter adapter;
+    DrawerLayout drawerLayout;
+    NavigationView navView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +48,10 @@ public class CartActivity extends AppCompatActivity {
         txtTotal = findViewById(R.id.txtTotal);
         btnCheckout = findViewById(R.id.btnCheckout);
         imgProfile = findViewById(R.id.imgProfile);
+
+        drawerLayout = findViewById(R.id.drawerLayout);
+        navView = findViewById(R.id.navView);
+        imgMenu = findViewById(R.id.imgMenu);
 
         recyclerCart.setLayoutManager(new LinearLayoutManager(this));
 
@@ -78,7 +88,7 @@ public class CartActivity extends AppCompatActivity {
             order.put("total", CartManager.getTotalPrice());
             order.put("status", "pending");
             order.put("staffId", FirebaseAuth.getInstance().getUid());
-            order.put("time", System.currentTimeMillis());
+            order.put("time", FieldValue.serverTimestamp());
 
             // push lên firebase
             db.collection("orders")
@@ -96,6 +106,28 @@ public class CartActivity extends AppCompatActivity {
                         Toast.makeText(this, "Lỗi tạo hóa đơn", Toast.LENGTH_SHORT).show();
                     });
 
+        });
+        // open drawer
+        imgMenu.setOnClickListener(v ->
+                drawerLayout.openDrawer(GravityCompat.START)
+        );
+
+        // navigation menu
+        navView.setNavigationItemSelectedListener(item -> {
+
+            int id = item.getItemId();
+
+            if (id == R.id.nav_staff_home) {
+                startActivity(new Intent(this, StaffHomeActivity.class));
+            }
+
+            else if (id == R.id.nav_cart) {
+                //
+            }
+
+
+            drawerLayout.closeDrawer(GravityCompat.START);
+            return true;
         });
 
         imgProfile.setOnClickListener(v -> {
