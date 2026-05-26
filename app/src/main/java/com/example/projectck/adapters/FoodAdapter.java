@@ -4,11 +4,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.projectck.R;
 import com.example.projectck.models.Food;
 
@@ -65,6 +67,17 @@ public class FoodAdapter
         holder.tvFoodDescription.setText(
                 food.getDescription()
         );
+
+        if (food.getImageUrl() != null && !food.getImageUrl().isEmpty()) {
+            Glide.with(holder.itemView.getContext())
+                    .load(food.getImageUrl())
+                    .placeholder(R.drawable.ic_add) // Ảnh chờ khi đang tải
+                    .error(R.drawable.ic_menu)       // Ảnh báo lỗi nếu link sai
+                    .into(holder.imgFood);
+        } else {
+            holder.imgFood.setImageResource(R.drawable.ic_add);
+        }
+
         holder.btnDelete.setOnClickListener(v -> {
 
             listener.onDeleteClick(food);
@@ -86,6 +99,7 @@ public class FoodAdapter
 
         TextView tvFoodName, tvFoodPrice, tvFoodDescription;
         Button btnEdit, btnDelete;
+        ImageView imgFood;
 
         public FoodViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -104,6 +118,8 @@ public class FoodAdapter
 
             btnDelete =
                     itemView.findViewById(R.id.btnDelete);
+            
+            imgFood = itemView.findViewById(R.id.imgFood);
         }
     }
 }

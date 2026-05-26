@@ -7,6 +7,37 @@
     android:orientation="vertical"
     android:padding="20dp">
 
+    <ImageView
+        android:id="@+id/imgFoodPreview"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/ic_add"
+        android:layout_marginBottom="10dp"/>
+
+    <Button
+        android:id="@+id/btnSelectImage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Chọn ảnh từ máy"
+        android:layout_gravity="center"
+        android:layout_marginBottom="5dp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="-- HOẶC dán link ảnh vào đây --"
+        android:gravity="center"
+        android:textSize="12sp"
+        android:textColor="#777777"
+        android:layout_marginBottom="5dp"/>
+
+    <EditText
+        android:id="@+id/edtImageUrl"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Dán link hình ảnh (http://...)"/>
+
     <EditText
         android:id="@+id/edtFoodName"
         android:layout_width="match_parent"
