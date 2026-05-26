@@ -32,51 +32,36 @@ public class SplashActivity extends AppCompatActivity {
 
                 // nếu user chưa login -> chuyển sang loginactivity
                 if (user == null) {
-
-                    startActivity(new Intent(
-                            SplashActivity.this,
-                            LoginActivity.class
-                    ));
-
+                    startActivity(new Intent(SplashActivity.this, LoginActivity.class));
                     finish();
                 }
-
                 // user đã login -> kiểm tra role
                 else {
-
                     String uid = user.getUid();
-
                     db.collection("users")
                             .document(uid)
                             .get()
                             .addOnSuccessListener(new com.google.android.gms.tasks.OnSuccessListener<DocumentSnapshot>() {
                                 @Override
                                 public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                    if (documentSnapshot != null && documentSnapshot.exists()) {
+                                        String role = documentSnapshot.getString("role");
 
-                                    String role = documentSnapshot.getString("role");
-
-                                    // admin
-                                    if (role.equals("admin")) {
-
-                                        startActivity(new Intent(
-                                                SplashActivity.this,
-                                                AdminHomeActivity.class
-                                        ));
-
+                                        if ("admin".equals(role)) {
+                                            startActivity(new Intent(SplashActivity.this, AdminHomeActivity.class));
+                                        } else {
+                                            startActivity(new Intent(SplashActivity.this, StaffHomeActivity.class));
+                                        }
+                                    } else {
+                                        // Tài khoản không tồn tại trên Firestore -> Về Login
+                                        startActivity(new Intent(SplashActivity.this, LoginActivity.class));
                                     }
-
-                                    // staff
-                                    else {
-
-                                        startActivity(new Intent(
-                                                SplashActivity.this,
-                                                StaffHomeActivity.class
-                                        ));
-
-                                    }
-
                                     finish();
                                 }
+                            })
+                            .addOnFailureListener(e -> {
+                                startActivity(new Intent(SplashActivity.this, LoginActivity.class));
+                                finish();
                             });
                 }
 
