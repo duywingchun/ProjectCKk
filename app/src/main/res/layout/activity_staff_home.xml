@@ -6,7 +6,8 @@
     android:id="@+id/drawerLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".StaffHomeActivity">
+    tools:context=".StaffHomeActivity"
+    android:background="@drawable/bg_gradient">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -35,8 +36,8 @@
                 android:layout_weight="1"
                 android:text="ResManager - Staff"
                 android:textStyle="bold"
-                android:textSize="26sp"
-                android:textColor="#020B4E"
+                android:textSize="30sp"
+                android:textColor="@color/appname_color"
                 tools:ignore="HardcodedText" />
 
             <ImageView
