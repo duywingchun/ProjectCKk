@@ -12,7 +12,7 @@ import com.google.firebase.auth.FirebaseUser;
 
 public class StaffHomeActivity extends AppCompatActivity {
 
-    TextView tvWelcomeAdmin;
+    TextView tvWelcomeStaff;
     Button btnLogout;
 
     FirebaseAuth auth;
@@ -20,25 +20,21 @@ public class StaffHomeActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_admin_home);
+        setContentView(R.layout.activity_staff_home);
 
         // Firebase
         auth = FirebaseAuth.getInstance();
 
         // Ánh xạ view
-
+        tvWelcomeStaff = findViewById(R.id.tvWelcomeStaff);
         btnLogout = findViewById(R.id.btnLogout);
 
         // User hiện tại
         FirebaseUser user = auth.getCurrentUser();
 
         if(user != null){
-
             String email = user.getEmail();
-
-            tvWelcomeAdmin.setText(
-                    "Welcome Staff\n" + email
-            );
+            tvWelcomeStaff.setText("Welcome Staff\n" + email);
         }
 
         // Logout
