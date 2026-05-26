@@ -38,8 +38,8 @@ public class LoginActivity extends AppCompatActivity {
     private GoogleSignInClient mGoogleSignInClient; // Biến quản lý Google Client
 
     @Override
-    protected void onCreate(Bundle Bundle) {
-        super.onCreate(Bundle);
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
         // 1. Ánh xạ View

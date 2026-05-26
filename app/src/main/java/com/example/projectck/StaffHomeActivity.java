@@ -33,8 +33,12 @@ public class StaffHomeActivity extends AppCompatActivity {
         FirebaseUser user = auth.getCurrentUser();
 
         if(user != null){
+
             String email = user.getEmail();
-            tvWelcomeStaff.setText("Welcome Staff\n" + email);
+
+            tvWelcomeStaff.setText(
+                    "Welcome Staff\n" + email
+            );
         }
 
         // Logout
