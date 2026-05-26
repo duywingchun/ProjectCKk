@@ -141,6 +141,11 @@ public class StaffHomeActivity extends AppCompatActivity {
             });
         });
 
+        // AI Chat FAB
+        findViewById(R.id.fabAIChat).setOnClickListener(v -> 
+            startActivity(new Intent(this, ChatActivity.class))
+        );
+
         // load data
         loadFoods();
     }
