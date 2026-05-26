@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="12dp"
+    android:gravity="center_vertical">
+
+    <TextView
+        android:id="@+id/tvName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="2"
+        android:text="Food name"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:textColor="#000000" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnMinus"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:backgroundTint="@color/button_color"
+        android:text="-"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        android:gravity="center"
+        android:padding="0dp"
+        android:paddingLeft="0dp"
+        android:paddingRight="0dp" />
+
+    <TextView
+        android:id="@+id/tvQty"
+        android:layout_width="40dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="1"
+        android:textSize="16sp" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnPlus"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:backgroundTint="@color/button_color"
+        android:text="+"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        android:gravity="center"
+        android:padding="0dp"
+        android:paddingLeft="0dp"
+        android:paddingRight="0dp" />
+
+    <TextView
+        android:id="@+id/tvPrice"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:text="0 đ"
+        android:textStyle="bold"
+        android:textColor="#FF5722"
+        android:layout_weight="1"/>
+
+</LinearLayout>
